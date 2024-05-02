@@ -91,6 +91,7 @@ class DecisionTree:
         return left_idxs, right_idxs
 
     def _entropy(self, y):
+        y = list(map(int, y))
         hist = np.bincount(y)
         ps = hist / len(y)
         return -np.sum([p * np.log(p) for p in ps if p>0])
@@ -98,7 +99,9 @@ class DecisionTree:
 
     def _most_common_label(self, y):
         counter = Counter(y)
-        value = counter.most_common(1)[0][0]
+        if counter:
+            value = counter.most_common(1)[0][0]
+        else: value = 0
         return value
 
     def predict(self, X):
@@ -112,5 +115,4 @@ class DecisionTree:
             return self._traverse_tree(x, node.left)
         return self._traverse_tree(x, node.right)
         
-
 
